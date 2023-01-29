@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>CBRE Visualization</title>
+    <style>
+      
+    /* Add some styling for the form elements */
+    input[type="range"] {
+        width: 40%;
+        height: 25%;
+    }
+
+    .sliderResult {
+        display:inline;
+    }
+
+    body {
+        font-family: 'Arial';
+        font-size: 20pt;
+    }
+
+    #my-button {
+        background-color: gray;
+        border: none;
+        color: white;
+        padding: 30px 100px;
+        text-align: center;
+        text-decoration: none;
+        display: inline-block;
+        font-size: 16px;
+        margin: 4px 2px;
+        cursor: pointer;
+        border-radius: 5px;
+        transition: all 0.5s;
+    }
+
+    #my-button:hover {
+        background-color: darkslategray;
+        /*transform: scale(1.1);*/
+    }
+
+    #checkbox {
+        width: 40px;
+        height: 40px;
+        vertical-align: middle;
+    }
+
+    .TeamSettings {
+        visibility: hidden;
+    }
+    </style>
+  </head>
+  <body onload="SetupCanvas(); updateResult();">
+    <div class="loader"></div>
+<!-- 
+    lkjdiskjdijsids -->
+    <div style="display: flex; justify-content: space-between;">
+        <div style="flex: 1;">
+            <div id="canvasHolder">
+                <canvas id="canvas" width="800" height="700" style="border:3px solid #000000;">
+                </canvas>
+            </div>
+        </div>
+        <div style="flex: 1;">
+            <form>
+                <label for="slider1">Filling Multiplier&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp&nbsp<div class="sliderResult" id="result1"></div></label>
+                <br>
+                <input type="range" min="-5" max="25" value="3" class="slider" id="slider1">
+                <br>
+
+                <label for="slider2">'Preferred' Multiplier<div class="sliderResult" id="result2"></div></label>
+                <br>
+                <input type="range" min="-5" max="25" value="3" class="slider" id="slider2">
+                <br>
+
+                <label for="slider3">'Tolerated' Multiplier<div class="sliderResult" id="result3"></div></label>
+                <br>
+                <input type="range" min="-25" max="25" value="0" class="slider" id="slider3">
+                <br>
+
+                <label for="slider4">'No Way' Multiplier&nbsp&nbsp&nbsp<div class="sliderResult" id="result4"></div></label>
+                <br>
+                <input type="range" min="-25" max="5" value="-6" class="slider" id="slider4">
+                <br>
+                <!--
+                <label for="checkbox">Remove 'No Way' Values Entirely</label>
+                <input type="checkbox" id="checkbox">
+                <br>
+                -->
+                <button type="button" id="my-button" onclick="RunAnalysis()">Run Analysis</button>
+                <br>
+                <a href="https://tamuhack.com/static/th-2023/assets/CBRE%20Challenge.pdf">Challenge Link</a>
+
+                <br>
+                <div class="TeamSettings">Team 1 Settings</div>
+                
+                <br>
+                <label class="TeamSettings" for="input1">Adjust 'Preferred'</label>
+                <input class="TeamSettings" type="text" id="input1">
+                <br>
+                <label class="TeamSettings" for="input2">Adjust 'Tolerated'</label>
+                <input class="TeamSettings" type="text" id="input2">
+                <br>
+                <label class="TeamSettings" for="input3">Adjust 'No Way'&nbsp&nbsp&nbsp</label>
+                <input class="TeamSettings" type="text" id="input3">
+
+              </form>
+        </div>
+    </div>
+    
+    <script src="CBRE_Algorithm.js"></script>
+    <script src="CBRE_Visualization.js"></script>
+    <script>
+      // Get references to the form elements
+      var sliders = document.getElementsByClassName("slider");
+      //var checkbox = document.getElementById("checkbox");
+      var submitButton = document.getElementById("my-button");
+      var result1 = document.getElementById("result1");
+      var result2 = document.getElementById("result2");
+      var result3 = document.getElementById("result3");
+      var result4 = document.getElementById("result4");
+
+      // Add event listeners to the form elements
+      for (var i = 0; i < sliders.length; i++) {
+        sliders[i].addEventListener("input", updateResult);
+      }
+      //checkbox.addEventListener("change", updateResult);
+      submitButton.addEventListener("click", updateResult);
+      
+      function updateResult() {
+        // Get the values from the form elements
+        var sliderValues = [];
+        for (var i = 0; i < sliders.length; i++) {
+          sliderValues.push(sliders[i].value);
+        }
+        //var checkboxValue = checkbox.checked;
+        
+        // Update the text of the result element
+        result1.innerHTML = " (" + sliderValues[0] + ")";
+        result2.innerHTML = " (" + sliderValues[1] + ")";
+        result3.innerHTML = " (" + sliderValues[2] + ")";
+        result4.innerHTML = " (" + sliderValues[3] + ")";
+      }
+    </script>
+  </body>
+</html>
